@@ -1,29 +1,27 @@
 package mail
 
 import (
-	"fmt"
+	"errors"
 	"net/smtp"
 	"strings"
 )
 
 // 发送邮件
-func Send(params ...string) error {
-	to := params[0]
-	subject := params[1]
-	body := params[2]
-	from := params[3]
-	host := params[4]
-	port := params[5]
-	user := params[6]
-	password := params[7]
-	auth := smtp.PlainAuth("", user, password, host)
-	mailto := strings.Split(to, ";")
-	data := []byte("To: " + to + "\r\nFrom: " + from + "\r\nSubject: " + subject + "\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n" + body)
-	e := smtp.SendMail(host+":"+port, auth, from, mailto, data)
+func Send(options map[string]string) error {
+	auth := smtp.PlainAuth("", options["user"], options["password"], options["host"])
+	to := strings.Split(options["to"], ";")
+	headers := make([]string, 0)
+	headers = append(headers, "To: "+options["to"])
+	headers = append(headers, "From: "+options["from"])
+	headers = append(headers, "Subject: "+options["subject"])
+	headers = append(headers, "Content-Type: text/html; charset=UTF-8")
+	headers = append(headers, "")
+	headers = append(headers, options["body"])
+
+	data := []byte(strings.Join(headers, "\r\n"))
+	e := smtp.SendMail(options["host"]+":"+options["port"], auth, options["from"], to, data)
 	if e != nil {
-		fmt.Println(data, e)
-	} else {
-		fmt.Println("Send OK!")
+		return errors.New("failed to send")
 	}
 	return e
 }
