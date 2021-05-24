@@ -27,8 +27,8 @@ func List(params ...string) (files []string, e error) {
 	return files, e
 }
 
-// ModTime
-func ModTime(file string) (int64, error) {
+// Time
+func Time(file string) (int64, error) {
 	f, e := os.Stat(file)
 	if e != nil {
 		return 0, e
