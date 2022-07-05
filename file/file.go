@@ -141,3 +141,12 @@ func CreateDir(path string) bool {
 	e := os.MkdirAll(path, 0777)
 	return e == nil
 }
+
+// CreateDir
+func Delete(path string) bool {
+	if !IsDir(path) {
+		return false
+	}
+	e := os.Remove(path)
+	return e == nil
+}
