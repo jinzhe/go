@@ -54,11 +54,7 @@ func Post(u string, params map[string]string, headers ...map[string]string) stri
 }
 
 func PostJSON(u string, params map[string]string, headers ...map[string]string) string {
-	v := url.Values{}
-	for kk, vv := range params {
-		v.Set(kk, vv)
-	}
-	body, err := json.Marshal(v)
+	body, err := json.Marshal(params)
 	if err != nil {
 		log.Fatal(err)
 	}
