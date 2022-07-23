@@ -53,7 +53,7 @@ func Post(u string, params map[string]string, headers ...map[string]string) stri
 	return string(data)
 }
 
-func PostJSON(u string, params map[string]string, headers ...map[string]string) string {
+func PostJSON(u string, params map[string]interface{}, headers ...map[string]string) string {
 	body, err := json.Marshal(params)
 	if err != nil {
 		log.Fatal(err)
