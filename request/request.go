@@ -10,10 +10,15 @@ import (
 	"strings"
 )
 
-func Get(url string) string {
+func Get(url string, headers ...map[string]string) string {
 	request, e := http.Get(url)
 	if e != nil {
 		return ""
+	}
+	if len(headers) > 0 {
+		for k, v := range headers[0] {
+			request.Header.Set(k, v)
+		}
 	}
 	defer request.Body.Close()
 	body, e := ioutil.ReadAll(request.Body)
